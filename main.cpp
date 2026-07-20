@@ -8,8 +8,8 @@ char board[3][3] =
         {'.', '.', '.'},
         {'.', '.', '.'}};
 char currentPlayer = 'A';
-char currentMarker;
-char p1;
+char currentMarker = 'X';
+char p1 = 'X';
 int turnsCount = 0;
 
 // implementation functions
@@ -22,6 +22,17 @@ void drawBoard()
             cout << board[i][j] << " ";
         }
         cout << endl;
+    }
+}
+
+void resetBoard()
+{
+    for (int row = 0; row < 3; row++)
+    {
+        for (int col = 0; col < 3; col++)
+        {
+            board[row][col] = '.';
+        }
     }
 }
 
@@ -95,68 +106,75 @@ void currentPlayerManager()
 
 void game()
 {
-    bool gameOver = false;
-    bool validSelection = false;
-    cout << "--------------Tic Tac Toe Game--------------" << endl;
-    cout << "--------------------------------------------" << endl;
-    cout << "===Player A===" << endl;
-    cout << endl;
-    cout << "Select your marker X or O" << endl;
-    cin >> p1;
-
-    // Start Game
+    char playAgain;
     while (true)
     {
-        cout << "Turn no.: " << turnsCount << endl;
-        cout << "Player: " << currentPlayer << endl;
+        resetBoard();
+        turnsCount = 0;
 
-        promptMove();
-        drawBoard();
+        bool gameOver = false;
+        bool validSelection = false;
+        cout << "--------------Tic Tac Toe Game--------------" << endl;
+        cout << "--------------------------------------------" << endl;
+        cout << "===Player A===" << endl;
+        cout << endl;
+        cout << "Select your marker X or O" << endl;
+        cin >> p1;
 
-        if (checkHasWon())
+        if (p1 == 'X' || p1 == 'x')
         {
-            cout << "Player " << currentPlayer << " won!!" << endl;
-            break;
+            currentPlayer = 'A';
+            currentMarker = 'X';
+        }
+        else if (p1 == 'O' || p1 == 'o')
+        {
+            currentPlayer = 'A';
+            currentMarker = 'O';
+        }
+        else
+        {
+            cout << "Invalid marker.\n";
+            cout << "Default marker: X is going to be your marker!. \n";
+
+            currentPlayer = 'A';
+            currentMarker = 'X';
         }
 
-        currentPlayerManager();
-        turnsCount++;
-    }
+        // Start Game
 
-    drawBoard();
-
-    gameOver = checkHasWon();
-    if (gameOver)
-    {
-        cout << "Logic Error";
-    }
-
-    while (true)
-    {
-        cout << "\nPlayer " << currentPlayer
-             << " (" << currentMarker << ")\n";
-
-        promptMove();
-        drawBoard();
-
-        if (checkHasWon())
+        while (true)
         {
-            cout << "Player " << currentPlayer << " won!\n";
-            break;
+            cout << "\nPlayer " << currentPlayer
+                 << " (" << currentMarker << ")\n";
+
+            
+            drawBoard();
+            promptMove();
+            turnsCount++;
+            drawBoard();
+
+            if (checkHasWon())
+            {
+                cout << "Player " << currentPlayer << " won!\n";
+                break;
+            }
+
+            if (turnsCount == 9)
+            {
+                cout << "It's a draw!\n";
+                break;
+            }
+
+            currentPlayerManager();
         }
 
-        turnsCount++;
-
-        if (turnsCount == 9)
+        cout << "Do you want to play again? " << endl;
+        cin >> playAgain;
+        if (playAgain == 'N' || playAgain == 'n')
         {
-            cout << "It's a draw!\n";
             break;
         }
-
-        currentPlayerManager();
     }
-
-    cout << "Player " << currentPlayer << " won!!" << endl;
 }
 
 int main()
