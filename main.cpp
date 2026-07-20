@@ -17,12 +17,28 @@ void drawBoard()
 {
     for (int i = 0; i < 3; i++)
     {
+        if (i == 0)
+        {
+            cout << "    0   1   2" << endl;
+        }
+        cout << "  +---+---+---+" << endl;
         for (int j = 0; j < 3; j++)
         {
-            cout << board[i][j] << " ";
+            if (j == 0)
+            {
+                cout << i << " | " << board[i][j];
+            }
+            else
+            {
+
+                cout << " | " << board[i][j];
+            }
         }
+        cout << " |";
         cout << endl;
     }
+
+    cout << "  +---+---+---+" << endl;
 }
 
 void resetBoard()
@@ -141,14 +157,13 @@ void game()
         }
 
         // Start Game
-
+        drawBoard();
         while (true)
         {
-            cout << "\nPlayer " << currentPlayer
-                 << " (" << currentMarker << ")\n";
+            cout << "\nTurn " << turnsCount + 1 << endl;
+            cout << "Player " << currentPlayer
+                 << " (" << currentMarker << ")" << endl;
 
-            
-            drawBoard();
             promptMove();
             turnsCount++;
             drawBoard();
